@@ -28,6 +28,7 @@ class BaseTracer(BaseCallbackHandler, ABC):
         super().__init__(**kwargs)
         self.run_map: Dict[str, Union[LLMRun, ChainRun, ToolRun]] = {}
         self.session: Optional[TracerSession] = None
+        self.example_id: Optional[str] = None
 
     @staticmethod
     def _add_child_run(
@@ -142,6 +143,7 @@ class BaseTracer(BaseCallbackHandler, ABC):
             execution_order=execution_order,
             child_execution_order=execution_order,
             session_id=self.session.id,
+            example_id=self.example_id,
         )
         self._start_trace(llm_run)
 
@@ -207,6 +209,7 @@ class BaseTracer(BaseCallbackHandler, ABC):
             child_execution_order=execution_order,
             child_runs=[],
             session_id=self.session.id,
+            example_id=self.example_id,
         )
         self._start_trace(chain_run)
 
@@ -272,6 +275,7 @@ class BaseTracer(BaseCallbackHandler, ABC):
             child_execution_order=execution_order,
             child_runs=[],
             session_id=self.session.id,
+            example_id=self.example_id,
         )
         self._start_trace(tool_run)
 
